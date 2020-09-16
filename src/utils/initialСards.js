@@ -1,0 +1,3 @@
+export { cards }
+
+let cards = [];
