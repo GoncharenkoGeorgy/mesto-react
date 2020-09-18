@@ -1,5 +1,3 @@
-export { api }
-
 class Api {
   constructor(options) {
     // тело конструктора
@@ -137,3 +135,5 @@ const api = new Api({
     'Content-Type': 'application/json'
   }
 });
+
+export { api };

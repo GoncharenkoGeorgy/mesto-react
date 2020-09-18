@@ -1,10 +1,8 @@
 import React from 'react';
-import { api } from '../utils/Api.js';
-import { Card } from './Card.js';
+import { api } from '../utils/api.js';
+import Card from './Card.js';
 
-export { Main }
-
-class Main extends React.Component {
+export default class Main extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,12 +43,12 @@ class Main extends React.Component {
             <div className="profile__info-container">
               <div className="profile__info">
                 <h1 className="profile__info-heading">{this.state.userName}</h1>
-                <button className="profile__info-edit" onClick={this.props.onEditProfile}></button>
+                <button className="profile__info-edit" onClick={this.props.onEditProfile} />
               </div>
               <p className="profile__info-text">{this.state.userDescription}</p>
             </div>
           </div>
-          <button className="profile__add-button popup-add-place" onClick={this.props.onAddPlace}></button>
+          <button className="profile__add-button popup-add-place" onClick={this.props.onAddPlace} />
         </section>
 
         <section className="elements-section">

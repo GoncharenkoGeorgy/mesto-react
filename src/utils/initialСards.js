@@ -1,3 +1,0 @@
-export { cards }
-
-let cards = [];

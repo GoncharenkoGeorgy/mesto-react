@@ -13,6 +13,11 @@
   object-fit: contain;
   background-repeat: no-repeat;
   background-position: center;  
+  visibility: hidden;
+}
+
+.popup_opened .popup__close {
+  visibility: visible;
 }
 
 .popup__close:hover {

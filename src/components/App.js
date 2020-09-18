@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Header } from './Header.js';
-import { Main } from './Main.js';
+import Main from './Main.js';
 import { Footer } from './Footer.js';
-import { PopupWithForm } from './PopupWithFrom.js';
-import { ImagePopup } from './ImagePopup.js';
+import PopupWithForm from './PopupWithFrom.js';
+import ImagePopup from './ImagePopup.js';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);

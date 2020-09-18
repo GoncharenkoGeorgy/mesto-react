@@ -1,8 +1,6 @@
 import React from 'react';
 
-export { PopupWithForm }
-
-class PopupWithForm extends React.Component {
+export default class PopupWithForm extends React.Component {
 
   render() {
     return (
@@ -11,10 +9,10 @@ class PopupWithForm extends React.Component {
         this.props.isOpen && 'popup_opened'
         }`}>
         <div className="popup__container popup-mouse">
-          <button className="popup__close popup-edit-close" onClick={this.props.onClose}></button>
+          <button className="popup__close popup-edit-close" onClick={this.props.onClose} />
           <div className="popup__content">
             <h2 className="popup__heading">{this.props.title}</h2>
-            <form className={`popup__form popup-${this.props.name}`} novalidate>
+            <form className={`popup__form popup-${this.props.name}`} noValidate>
               {this.props.children}
               <button className="popup__save popup-edit-save">
                 <div className="popup__save_loading">Сохранение...</div>
