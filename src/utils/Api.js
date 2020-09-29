@@ -33,8 +33,8 @@ class Api {
       });
   }
 
-  deleteCard(_id) {
-    return fetch(`${this._baseUrl}/cards/${_id}`, {
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: "DELETE",
       headers: this._headers,
     }).then(res => {
@@ -47,9 +47,9 @@ class Api {
     });
   }
 
-  likedCard(id) {
-    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
-      method: "PUT",
+  changeLikeCardStatus(cardId, isLiked) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+      method: `${isLiked ? 'PUT' : 'DELETE'}`,
       headers: this._headers,
     }).then(res => {
       if (res.ok) {
@@ -61,26 +61,14 @@ class Api {
     });
   }
 
-  deleteLikedCard(id) {
-    return fetch(`${this._baseUrl}/cards/likes/${id}`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      // если ошибка, отклоняем промис
-      return Promise.reject(`Ошибка: ${res.status}`);
-    });
-  }
-
-  postCard(data) {
+  postCard(newCard) {
     return fetch(`${this._baseUrl}/cards`, {
       method: "POST",
       headers: this._headers,
-      body: JSON.stringify(data
-      )
+      body: JSON.stringify({
+        name: newCard.name,
+        link: newCard.link
+      })
     }).then(res => {
       if (res.ok) {
         return res.json();
@@ -92,12 +80,12 @@ class Api {
   }
 
   //up avatar
-  updateAvatar(data) {
+  updateAvatar(avatar) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify(
-        { avatar: data.link }
+        { avatar: avatar.url }
       )
     }).then(res => {
       if (res.ok) {
@@ -110,13 +98,13 @@ class Api {
   }
 
   //up profile
-  updateProfile(name, about) {
+  updateProfile(userData) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
       headers: this._headers,
       body: JSON.stringify({
-        name,
-        about
+        name: userData.name,
+        about: userData.about
       })
     }).then(res => {
       if (res.ok) {
