@@ -20,12 +20,13 @@ function AddPlacePopup(props) {
     setLink('');
   }, [isOpen]);
 
-  function handleChange(e) {
-
+  function handleChangeName(e) {
     // Передаём значения управляемых компонентов во внешний обработчик
-    e.target.name === 'name'
-      ? setName(e.target.value)
-      : setLink(e.target.value)
+      setName(e.target.value)
+  }
+
+  function handleChangeLink(e) {
+      setLink(e.target.value)
   }
 
   function handleSubmit(e) {
@@ -57,7 +58,7 @@ function AddPlacePopup(props) {
           maxLength='30'
           required
           ref={nameRef}
-          onChange={handleChange}
+          onChange={handleChangeName}
         />
         <span className='popup__input-error' id='text-input-error'></span>
       </label>
@@ -70,7 +71,7 @@ function AddPlacePopup(props) {
           placeholder='Ссылка на картинку'
           required
           ref={linkRef}
-          onChange={handleChange}
+          onChange={handleChangeLink}
         />
         <span className='popup__input-error' id='url-input-error'></span>
       </label>

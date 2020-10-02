@@ -14,7 +14,7 @@ function EditAvatarPopup(props) {
   // его данные будут использованы в управляемых компонентах.
   React.useEffect(() => {
     inputRef.current.value = '';
-  });
+  }, [isOpen]);
 
   function handleSubmit(evt) {
     evt.preventDefault();

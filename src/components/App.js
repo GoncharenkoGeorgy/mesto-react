@@ -2,20 +2,21 @@ import React, { useState } from 'react';
 import { Header } from './Header.js';
 import { Main } from './Main.js';
 import { Footer } from './Footer.js';
-import { PopupWithForm } from './PopupWithFrom.js';
 import { ImagePopup } from './ImagePopup.js';
-import { CurrentUserContext } from '../context/CurrentUserContext.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 import { api } from '../utils/Api.js';
 import { EditProfilePopup } from './EditProfilePopup.js';
 import { EditAvatarPopup } from './EditAvatarPopup.js';
 import { AddPlacePopup } from './AddPlacePopup.js';
+import { DeletePlacePopup } from './DeletePlacePopup.js';
 
-//Доп еще не доделал, отправил основную часть на проверку
+//Валидацию с закрытием не доделал, если есть возможность, прислал бы еще на проверку, если тут конечно все хорошо еще)
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isDeletePlacePopupOpen, setDeletePlacePopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({
     isImageOpen: false,
     link: '',
@@ -23,7 +24,8 @@ function App() {
   });
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = React.useState([]);
-  const [isLoading, setLoading] = useState();
+  const [isLoading, setLoading] = useState(false);
+  const [deleteCard, setDeleteCard] = useState({});
 
   React.useEffect(() => {
     Promise.all([api.getCards(), api.getUserInfo()])
@@ -46,10 +48,16 @@ function App() {
     setAddPlacePopupOpen(true);
   }
 
+  function handleDeletePlaceClick(card) {
+    setDeletePlacePopupOpen(true);
+    setDeleteCard(card);
+  }
+
   function closeAllPopups() {
     setEditProfilePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setAddPlacePopupOpen(false);
+    setDeletePlacePopupOpen(false);
     setSelectedCard({
       isImageOpen: false,
       link: '',
@@ -76,16 +84,17 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  // НЕ ЗАБЫТЬ ДОДЕЛАТЬ!!
-  function handleCardDelete(card) {
-
-    api.deleteCard(card._id)
+  function handleCardDelete() {
+    setLoading(true);
+    api.deleteCard(deleteCard._id)
       .then(() => {
 
         //обновляю стейт cards с помощью метода filter: создаю копию массива, исключив из него удалённую карточку.
-        setCards(cards.filter((item) => item !== card));
+        setCards(cards.filter((item) => item !== deleteCard));
+        closeAllPopups();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false));
   }
 
   function handleUpdateUser(userData) {
@@ -130,7 +139,7 @@ function App() {
           cards={cards}
           onCardClick={handleCardClick}
           onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
+          onCardDelete={handleDeletePlaceClick}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
           onEditAvatar={handleEditAvatarClick}
@@ -159,13 +168,12 @@ function App() {
           onUpdateAvatar={handleUpdateAvatar}
         />
 
-        <PopupWithForm
-          name='delete'
-          title='Вы уверены?'
-          submit='Да'
+        <DeletePlacePopup
+          isOpen={isDeletePlacePopupOpen}
           onClose={closeAllPopups}
-        >
-        </PopupWithForm>
+          isLoading={isLoading}
+          onDeletePlace={handleCardDelete}
+        />
 
         <ImagePopup
           name={selectedCard.name}
